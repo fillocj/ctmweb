@@ -1,0 +1,291 @@
+/*****************************************************************************
+ * Open MCT Web, Copyright (c) 2014-2015, United States Government
+ * as represented by the Administrator of the National Aeronautics and Space
+ * Administration. All rights reserved.
+ *
+ * Open MCT Web is licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * Open MCT Web includes source code licensed under additional open source
+ * licenses. See the Open Source Licenses file (LICENSES.md) included with
+ * this source code distribution or the Licensing information page available
+ * at runtime from the About dialog for additional information.
+ *****************************************************************************/
+$baseRatio: 1.5;
+$pad: $interiorMargin * $baseRatio;
+
+.s-btn,
+.s-icon-btn {
+    @include user-select(none);
+    cursor: pointer;
+    text-decoration: none;
+    height: $btnStdH;
+    line-height: $btnStdH;
+}
+
+.s-btn {
+    @include box-sizing(border-box);
+    padding: 0 $pad;
+    font-size: 0.7rem;
+    vertical-align: top;
+
+    .icon {
+        font-size: 0.8rem;
+        color: $colorKey;
+    }
+
+    .title-label {
+        vertical-align: top;
+    }
+
+	&.lg {
+		font-size: 1rem;
+	}
+
+    &.sm {
+        padding: 0 $pad / $baseRatio;
+    }
+
+    &.vsm {
+        padding: 0 ($pad / $baseRatio) / 2;
+    }
+
+    &.major {
+        $bg: $colorBtnMajorBg;
+        $hc: lighten($bg, 10%);
+        @include btnSubtle($bg, $hc, $colorBtnMajorFg, $colorBtnMajorFg);
+    }
+
+    &:not(.major) {
+        // bg, bgHov, fg, ic
+        @include btnSubtle($colorBtnBg, $colorKey, $colorBtnFg, $colorBtnIcon);
+    }
+    &.pause-play {
+
+    }
+    &.t-save:before {
+        content:'\e612';
+        font-family: symbolsfont;
+        margin-right: $interiorMarginSm;
+    }
+    &.t-cancel {
+        .title-label { display: none; }
+        &:before {
+            content:'\78';
+            font-family: symbolsfont;
+        }
+    }
+
+    &.pause-play {
+        .icon:before {
+            content: "\0000F1";
+        }
+        &.paused {
+            @include btnSubtle($colorPausedBg, pushBack($colorPausedBg, 10%), $colorPausedFg, $colorPausedFg);
+            .icon {
+                @include pulse(1000ms);
+                :before {
+                    content: "\0000EF";
+                }
+            }
+        }
+    }
+
+    &.show-thumbs {
+        .icon:before {
+            content: "\000039";
+        }
+    }
+}
+
+.s-icon-btn {
+    @extend .ui-symbol;
+    // Color and styling additionally in _controls.scss
+}
+
+.mini-tab {
+    // Meant to be used as pane hide/show control elements in concert with mct-splitter
+    //@extend .ui-symbol;
+    @include desktop {
+        //@include test(green);
+        $iconH: $uePaneMiniTabH;
+        $iconW: $uePaneMiniTabW;
+        $iconInnerLR: 0;
+        $arwD: 9px;
+        $arwOffsetX: 0px;
+        $arwAnimOffsetX: 2px + $iconInnerLR;
+        $cBg: pullForward($colorBodyBg, 15%);
+        $cFg: $cBg;
+
+
+        @include border-radius($basicCr);
+        //@include boxShdw($shdwBtns);
+        @include box-sizing(border-box);
+        @include trans-prop-nice((color, background-color), 100ms);
+        color: $cFg;
+        cursor: pointer;
+        font-family: symbolsfont;
+        font-size: $arwD;
+        display: block;
+        position: absolute;
+        line-height: $iconH;
+        height: $iconH; width: $iconW;
+        text-align: center;
+
+        &:hover {
+            //background-color: $cBg;
+            color: $colorKey; //pullForward($cFg, $ltGamma);
+        }
+
+        &.collapsed {
+            // State when the pane this element controls has been collapsed
+            @include btnSubtle($colorBtnBg, $colorKey, $colorBtnFg, $colorBtnIcon);
+            &:before { opacity: 0; }
+            &:after { opacity: 1; }
+            &:hover {
+                &:before { opacity: 1; }
+                &:after { opacity: 0; }
+            }
+
+        }
+
+        &:before,
+        &:after {
+            //@include test();
+            @include trans-prop-nice((left, right, opacity), 250ms);
+            display: block;
+            height: 100%;
+            position: absolute;
+        }
+
+        &:before {
+            // Always the arrow icon
+            //@include test(green);
+            //font-size: $arwD;
+            width: $arwD;
+        }
+        &:after {
+            // Always icon; content is set in _layout.scss
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+        }
+
+        &.anchor-left {
+            // |<
+            text-align: right;
+            &:before {
+                content:'\3c'; // Collapse left icon e613
+                right: $iconInnerLR;
+            }
+            //&:hover:before { right: $arwAnimOffsetX; }
+            &.collapsed {
+                @include border-left-radius(0);
+                text-align: left;
+                &:before {
+                    content:'\3e';
+                    left: $iconInnerLR;
+                }
+                &:hover:before { left: $arwAnimOffsetX; }
+            }
+        }
+        &.anchor-right {
+            // >|
+            text-align: left;
+            &:before {
+                content:'\3e'; // Collapse right icon e614
+                left: $iconInnerLR;
+            }
+            //&:hover:before { left: $arwAnimOffsetX; }
+            &.collapsed {
+                @include border-right-radius(0);
+                &:before {
+                    text-align: right;
+                    content:'\3c';
+                    right: $iconInnerLR;
+                }
+                &:hover:before { right: $arwAnimOffsetX; }
+            }
+        }
+    }
+}
+
+.mini-tab-icon {
+    // Meant to be used as pane hide/show control elements in concert with mct-splitter
+    //@extend .ui-symbol;
+    @include desktop {
+        $d: $uePaneMiniTabW;
+        //@include trans-prop-nice(transform, 150ms);
+        color: pullForward($colorBodyBg, 15%);
+        cursor: pointer;
+        display: block;
+        font-family: symbolsfont;
+        font-size: $d;
+        position: absolute;
+        height: $d; width: $d;
+        line-height: $d;
+        overflow: hidden;
+        word-break: break-all;
+
+        &.collapsed {
+            $d: $uePaneMiniTabCollapsedW;
+            width: $d; font-size: $d;
+        }
+
+        &:before,
+        &:after {
+            position: absolute;
+            display: inherit;
+        }
+
+        &:before {
+            content: '\78'; // X icon
+        }
+
+        &:hover {
+            color: $colorKey;
+            //@include transform(scale(1.2));
+        }
+    }
+}
+
+.l-btn-set {
+    // Buttons that have a very tight conceptual grouping - no internal space between them.
+    // Structure: .btn-set > mct-representation class=first|last > .s-btn
+    //@include test(red);
+    font-size: 0; // Remove space between s-btn elements due to white space in markup
+
+    .s-btn {
+        @include border-radius(0);
+        margin-left: 1px;
+    }
+
+    .first {
+        .s-btn {
+            @include border-left-radius($controlCr);
+            margin-left: 0;
+        }
+    }
+
+    .last {
+        .s-btn {
+            @include border-right-radius($controlCr);
+        }
+    }
+}
+
+.paused {
+    &:not(.s-btn) {
+        border-color: $colorPausedBg !important;
+        color: $colorPausedBg !important;
+    }
+}
+

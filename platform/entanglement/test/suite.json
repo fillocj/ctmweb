@@ -1,0 +1,17 @@
+[
+    "actions/AbstractComposeAction",
+    "actions/CopyAction",
+    "actions/GoToOriginalAction",
+    "actions/LinkAction",
+    "actions/MoveAction",
+    "actions/SetPrimaryLocationAction",
+    "policies/CrossSpacePolicy",
+    "services/CopyService",
+    "services/CopyTask",
+    "services/LinkService",
+    "services/MoveService",
+    "services/LocationService",
+    "services/LocatingCreationDecorator",
+    "services/LocatingObjectDecorator",
+    "capabilities/LocationCapability"
+]

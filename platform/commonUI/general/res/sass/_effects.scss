@@ -1,0 +1,77 @@
+/*****************************************************************************
+ * Open MCT Web, Copyright (c) 2014-2015, United States Government
+ * as represented by the Administrator of the National Aeronautics and Space
+ * Administration. All rights reserved.
+ *
+ * Open MCT Web is licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * Open MCT Web includes source code licensed under additional open source
+ * licenses. See the Open Source Licenses file (LICENSES.md) included with
+ * this source code distribution or the Licensing information page available
+ * at runtime from the About dialog for additional information.
+ *****************************************************************************/
+.disabled,
+a.disabled {
+	@include opacity($controlDisabledOpacity);
+	pointer-events: none !important;
+	cursor: default !important;
+}
+
+.incised {
+    @include boxIncised(0.8);
+    border-bottom: 1px solid rgba(#fff, 0.3);
+}
+
+.test-stripes {
+	@include bgDiagonalStripes();
+}
+
+.test {
+	@include test();
+}
+
+@mixin customKeyframes($animName: pulse, $op0: 0.5) {
+	@include keyframes($animName) {
+		0%   { opacity: $op0; }
+		100% { opacity: 1; }
+	}
+	@include animation-name(pulse, 0.2);
+}
+
+@mixin pulse($dur: 500ms, $iteration: infinite, $opacity0: 0.5, $opacity100: 1) {
+    @include keyframes(pulse) {
+        0%   { opacity: $opacity0; }
+        100% { opacity: $opacity100; }
+    }
+	@include animation-name(pulse);
+	@include animation-duration($dur);
+	@include animation-direction(alternate);
+	@include animation-iteration-count($iteration);
+	@include animation-timing-function(ease-in-out);
+}
+
+@mixin pulseBorder($c: red, $dur: 500ms, $iteration: infinite, $delay: 0s, $opacity0: 0, $opacity100: 1) {
+	@include keyframes(pulseBorder) {
+		0%   { border-color: rgba($c, $opacity0); }
+		100% { border-color: rgba($c, $opacity100); }
+	}
+	@include animation-name(pulseBorder);
+	@include animation-duration($dur);
+	@include animation-direction(alternate);
+	@include animation-iteration-count($iteration);
+	@include animation-timing-function(ease);
+    @include animation-delay($delay);
+}
+
+.pulse {
+	@include pulse(750ms);
+}
